@@ -1,4 +1,5 @@
 import socket
+from datetime import datetime
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5005
@@ -10,28 +11,22 @@ invalid = "Invalid!"
 #msg= "What is the current date and time?"
 msg="t"
 msg_rcv=''
-
+clientsocket, address = s.accept()
+print(f"Connection has been established!")
 
 while True:
-        clientsocket, address = s.accept()
-        print(f"Connection has been established!")
 
         data = clientsocket.recv(100)
-        if not data:
-                break
-        elif data == 'killsrv':
-                clientsocket.close()
-                sys.exit()
+        msg_rcv += data.decode()
+        if msg_rcv != msg:
+                clientsocket.sendall(invalid.encode())
+                msg_rcv = ''
+
         else:
-                print(data)
-                clientsocket.sendall("sending".encode())
-                #msg_rcv += data.decode()
-                #if msg_rcv != msg:
-                 #   clientsocket.sendall(invalid.encode())
-                  #  msg_rcv = ''
-                #else:
-                 #   clientsocket.sendall("good".encode())
-                  #  msg_rcv = ''
+                datetime= datetime.now().strftime('%m/%d/%Y %H:%M:%S')
+                sendmsg= "Current Date and Time - " +datetime
+                clientsocket.sendall(sendmsg.encode())
+                msg_rcv = ''
          
 
         
