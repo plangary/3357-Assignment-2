@@ -11,23 +11,33 @@ invalid = "Invalid!"
 #msg= "What is the current date and time?"
 msg="t"
 msg_rcv=''
-clientsocket, address = s.accept()
-print(f"Connection has been established!")
 
 while True:
+        clientsocket, address = s.accept()
+        print("Connection has been established!")
+        while True:
 
-        data = clientsocket.recv(100)
-        msg_rcv += data.decode()
-        if msg_rcv != msg:
-                clientsocket.sendall(invalid.encode())
-                msg_rcv = ''
 
-        else:
-                datetime= datetime.now().strftime('%m/%d/%Y %H:%M:%S')
-                sendmsg= "Current Date and Time - " +datetime
-                clientsocket.sendall(sendmsg.encode())
-                msg_rcv = ''
-         
+                try:
+
+
+                        data = clientsocket.recv(100)
+                        msg_rcv = data.decode()
+                        print (msg_rcv)
+                        if msg_rcv != msg:
+                                clientsocket.sendall(invalid.encode())
+
+                        else:
+                                datetimeObject= datetime.now().strftime('%m/%d/%Y %H:%M:%S')
+                                sendmsg= "Current Date and Time - " +datetimeObject
+                                clientsocket.sendall(sendmsg.encode())
+                                
+                        msg_rcv = ""
+
+                except Exception as e:
+                        print(e)
+                        break
+        
 
         
 

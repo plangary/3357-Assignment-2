@@ -14,7 +14,7 @@ while message.upper() !='Q':
     message = input("Enter Command\n")
     s.sendall(message.encode())
     data = s.recv(100)
-    print(data)
+    print(data.decode())
         
 
 
