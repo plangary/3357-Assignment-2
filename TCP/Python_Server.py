@@ -3,13 +3,12 @@ from datetime import datetime
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5005
-
+print("Waiting for connection")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
-invalid = "Invalid!"
-#msg= "What is the current date and time?"
-msg="t"
+invalid = "Invalid Command!"
+msg= "What is the current date and time?"
 msg_rcv=''
 
 while True:
@@ -23,7 +22,7 @@ while True:
 
                         data = clientsocket.recv(100)
                         msg_rcv = data.decode()
-                        print (msg_rcv)
+                        print ("Received Message: ",msg_rcv)
                         if msg_rcv != msg:
                                 clientsocket.sendall(invalid.encode())
 
@@ -36,6 +35,7 @@ while True:
 
                 except Exception as e:
                         print(e)
+                        print("Waiting for next connection")
                         break
         
 
@@ -43,12 +43,4 @@ while True:
 
 
 
-    
-
-
-
-
-
-#print('Client Address:', addr)
-#data = conn.recv(16)
-#s.close()
+s.close()
