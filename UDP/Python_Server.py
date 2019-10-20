@@ -9,19 +9,27 @@ s.bind((address))
 ##msg= "What is the current date and time?"
 msg = 't'
 msg_rcv=''
-
+invalid = "INVALID!"
 
 while True:
-        recv_data, addr = s.recvfrom(1024)
-        msg_rcv += recv_data.decode()
-        if msg_rcv != msg:
-                s.sendto("wrong".encode(),(address))
-                msg_rcv =''
+        while True:
 
-        else:
-                datetime= datetime.now().strftime('%m/%d/%Y %H:%M:%S')
-                sendmsg= "Current Date and Time - " +datetime
-                s.sendto(sendmsg.encode(),(address))
-                msg_rcv = ''
-                
+
+                try:
+                        recv_data,addr = s.recvfrom(1024)
+                        msg_rcv = recv_data.decode()
+                        print (msg_rcv)
+                        if msg_rcv != msg:
+                                s.sendto(invalid.encode(),(addr))
+
+                        else:
+                                datetimeObject= datetime.now().strftime('%m/%d/%Y %H:%M:%S')
+                                sendmsg= "Current Date and Time - " +datetimeObject
+                                s.sendto(sendmsg.encode(),(addr))
+                                
+                        msg_rcv = ""
+
+                except Exception as e:
+                        print(e)
+                        break
         
